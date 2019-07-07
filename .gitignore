@@ -1,0 +1,13 @@
+.gradle
+.vscode
+*.class
+
+index/index1/
+
+index/\.project
+
+index/\.settings/
+
+index/\.vscode/
+
+index/gradle/wrapper/

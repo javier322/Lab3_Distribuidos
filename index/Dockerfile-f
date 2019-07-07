@@ -1,0 +1,24 @@
+FROM openjdk:8-jdk-alpine as build
+WORKDIR /workspace/index
+ 
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+RUN ./gradlew dependencies
+ 
+COPY src src
+COPY credentials.json .
+RUN ./gradlew build 
+RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+
+ 
+FROM openjdk:8-jre-alpine
+VOLUME /tmp
+ARG DEPENDENCY=/workspace/index/build/
+ARG CREDENTIAL=/workspace/index/credentials.json
+COPY --from=build ${DEPENDENCY}/libs /index/lib
+COPY --from=build ${CREDENTIAL} /index/lib
+WORKDIR /index/lib/
+RUN ls
+
+ENTRYPOINT ["java","-jar","index-0.0.1-SNAPSHOT.jar"]

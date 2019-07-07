@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lab3-back
+spec:
+  replicas: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: 
+      maxUnavailable: 1 
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: lab3-back
+    spec:
+      containers:
+      - image: javier322/index-lab3:latest
+        imagePullPolicy: Always
+        name: lab3-back
+        ports:
+          - containerPort: 8082
+      - image: redis
+        imagePullPolicy: Always
+        name: cache
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+          - mountPath: "/var/index"
+            name: index-disk
+      volumes:
+        - name: index-disk
+          persistentVolumeClaim:
+            claimName: index-claim
+            readOnly: true
