@@ -16,9 +16,6 @@ public class Title implements Serializable {
     private String endYear;
     private ArrayList<String> genres;
 
-    // public Title(){
-    //     this.genres=new ArrayList<String>();
-    // }
 
     public String getTitleId() {
         return titleId;

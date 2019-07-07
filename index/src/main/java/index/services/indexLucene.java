@@ -93,7 +93,7 @@ public class indexLucene implements IIndex {
 
         try {
 
-            IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("/var/index/")));
+            IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("/var/index")));
             IndexSearcher searcher = new IndexSearcher(reader);
 
             Analyzer analyzer = new StandardAnalyzer();

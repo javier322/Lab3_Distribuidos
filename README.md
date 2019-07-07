@@ -23,7 +23,12 @@ Tal como se menciona anteriormente, el despliegue se hace sobre kubernetes. El u
 
 # Uso del buscador
 
-Para hacer uso del buscador se cuenta con un cliente en la siguiente dirección. https://moviesappsd.herokuapp.com. En este solo se debe ingresar el nombre de algún título junto con el numero máximo de resultados que se desea obtener. Como resultado se obtendrá una lista de títulos de diferentes géneros.
+Para hacer uso del buscador se cuenta con un cliente en la siguiente dirección. https://moviesappsd.herokuapp.com. En este solo se debe ingresar el nombre de algún título junto con el numero máximo de resultados que se desea obtener. Como resultado se obtendrá una lista de títulos de diferentes géneros. El respositorio de dicho cliente se puede encontrar aquí: https://github.com/Felipez-Maturana/MoviesAppSD.
+
+Por otro lado, en caso de que se dese realizar la consulta directamente a la App se debe enviar una petición Post a la siguiente URL: http://35.247.198.0:8082/index/search, donde el json enviado presenta la siguiente estructura:
+    - title: Consulta realizada (String)
+    - limit: Numero máximo de resultados que se desea obtener (int).
+
 
 # Despligue de la solución
 

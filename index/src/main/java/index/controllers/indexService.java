@@ -74,6 +74,4 @@ public class indexService {
         client.shutdown();
         return titles;
     }
-
-
 }
