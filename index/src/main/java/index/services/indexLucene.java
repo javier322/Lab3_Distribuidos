@@ -57,9 +57,7 @@ import static java.lang.Integer.parseInt;
 @Service
 public class indexLucene implements IIndex {
 
-    private static final String SAMPLE_CSV_FILE_PATH = "./titles.csv";
 
-    // esto se debe modificar ya que no deberi estar tan acoplado a la bd
     public void indexar() {
         try {
             System.out.println("INSIDE BUILT");
@@ -95,35 +93,6 @@ public class indexLucene implements IIndex {
 
         try {
 
-
-
-            // String PATH = "./index1/";
-
-            // File directory = new File(PATH);  
-            // System.out.println("0kikko");
-
-            // if (!directory.exists()) {
-            //     System.out.println("asno");
-            //     directory.mkdir();
-            //     // If you require it to make the entire directory path including parents,
-            //     // use directory.mkdirs(); here instead.
-            // }
-            // System.out.println("asino");
-
-
-            // for (Blob blob : blobs.iterateAll()) {
-            //     blob.downloadTo(Paths.get("./index1/"));
-            //     System.out.println("kasjjsisjisjsijs");
-            // }
-            // System.out.println("asincrono");
-            // CloudStorageFileSystem fs =
-            // CloudStorageFileSystem.forBucket("titles_repository",
-            // CloudStorageConfiguration.DEFAULT, storage);
-
-            // Path path=fs.getPath("index1/");
-            // System.out.println("ajsjsjs");
-            // Path path=Paths.get(URI.create("gs://titles_repository/index1"));
-            // se debe desacoplar esto
             IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get("/var/index/")));
             IndexSearcher searcher = new IndexSearcher(reader);
 
@@ -137,19 +106,9 @@ public class indexLucene implements IIndex {
 
             System.out.println(hits.length);
             for (int i = 0; i < hits.length; i++) {
-                // List<String> genres = new ArrayList<String>();
-                // List<IndexableField> specificScore = new ArrayList<IndexableField>();
-                // List<IndexableField> genericDimName = new ArrayList<IndexableField>();
-                // List<IndexableField> genericDimScore = new ArrayList<IndexableField>();
-
-                // ArrayList<HashMap<String, Object>> general_dimensions = new
-                // ArrayList<HashMap<String, Object>>();
-                // ArrayList<HashMap<String, Object>> requirements = new
-                // ArrayList<HashMap<String, Object>>();
                 Document doc = searcher.doc(hits[i].doc);
                 System.out.println(hits[i].shardIndex + " " + hits[i].score);
 
-                // String id_salida = doc.get("id");
                 System.out.println(doc.get("originalTitle"));
                 Title tl = new Title();
                 tl.setTitleType(doc.get("titleType"));
@@ -160,9 +119,6 @@ public class indexLucene implements IIndex {
                 ArrayList<String> genres = new ArrayList<String>(Arrays.asList(doc.get("genres").split(" ")));
                 tl.setGenres(genres);
 
-                // specificScore = Arrays.asList(doc.getFields("specificScore"));
-                // genericDimName = Arrays.asList(doc.getFields("genericDimName"));
-                // genericDimScore = Arrays.asList(doc.getFields("genericDimScore"));
 
                 System.out.println(genres.size());
 
@@ -186,17 +142,12 @@ public class indexLucene implements IIndex {
 
         Credentials credentials = GoogleCredentials
                 .fromStream(new FileInputStream("./credentials.json"));
-        System.out.println("aqui me caigo");
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).setProjectId("steady-tracer-243022")
                 .build().getService();
 
-        // Get specific file from specified bucket
         Blob blob = storage.get(BlobId.of("titles_repository", "titles.csv"));
 
         ReadChannel readChannel = blob.reader();
-        // BufferedReader reader =
-        // Files.newBufferedReader(Paths.get(SAMPLE_CSV_FILE_PATH),
-        // StandardCharsets.UTF_8);
         BufferedReader reader = new BufferedReader(Channels.newReader(readChannel, "UTF-8"));
 
         System.out.println("rEAD1");
@@ -223,18 +174,7 @@ public class indexLucene implements IIndex {
                 doc.add(new TextField("genres", nextRecord[8].replace(',', ' '), Field.Store.YES));
             }
 
-            // System.out.println("titleId : " + nextRecord[0]);
-            // System.out.println("titleType : " + nextRecord[1]);
-            // System.out.println("PrimaryTitle : " + nextRecord[2]);
-            // System.out.println("originalTitle : " + nextRecord[3]);
-            // System.out.println("startYear : " + nextRecord[5]);
-            // System.out.println("endYear : " + nextRecord[6]);
-            // System.out.println("genres : " + nextRecord[8].replace(',', ' '));
-            // System.out.println("==========================");
-
             if (writer.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE_OR_APPEND) {
-                // System.out.println("Indexando el archivo: " + elemento.get("_id") + "con
-                // texto" + elemento.get("text"));
                 writer.addDocument(doc);
             }
         }

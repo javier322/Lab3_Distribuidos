@@ -29,13 +29,13 @@ public class indexService {
     @Autowired
     private IIndex index;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    @ResponseBody
-    public HttpStatus createIndex() {
-        System.out.println("INDEX");
-        index.indexar();
-        return HttpStatus.OK;
-    }
+    // @RequestMapping(value = "/create", method = RequestMethod.GET)
+    // @ResponseBody
+    // public HttpStatus createIndex() {
+    //     System.out.println("INDEX");
+    //     index.indexar();
+    //     return HttpStatus.OK;
+    // }
 
    
     @RequestMapping(value = "/search", method = RequestMethod.POST)
